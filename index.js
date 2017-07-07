@@ -2,7 +2,7 @@ var Q = require('q');
 
 var proc = require('child_process');
 
-module.exports = function(result, script) {
+module.exports = function(result, script, options) {
   var def = Q.defer();
 
   if (!script) {
@@ -10,7 +10,8 @@ module.exports = function(result, script) {
   } else if (script.shell) {
     console.log('spawning shell');
     console.log(script);
-    proc.exec(script.shell, function(error, stdout, stderr) {
+    options = typeof options !== 'undefined' ? options : {};
+    proc.exec(script.shell, options, function(error, stdout, stderr) {
       if (error) {
         console.log("exec error: " + error);
         //TODO: should this be rejecting the result?
