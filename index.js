@@ -2,15 +2,16 @@ var Q = require('q');
 
 var proc = require('child_process');
 
-module.exports = function(result, script, options) {
+module.exports = function(result, script) {
   var def = Q.defer();
+  var options;
 
   if (!script) {
     def.resolve(result);
   } else if (script.shell) {
     console.log('spawning shell');
     console.log(script);
-    options = typeof options !== 'undefined' ? options : {};
+    options = typeof script.options !== 'undefined' ? script.options : {};
     proc.exec(script.shell, options, function(error, stdout, stderr) {
       if (error) {
         console.log("exec error: " + error);
